@@ -18,10 +18,13 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "esp8266_header.h"
+#include "esp8266RX_Header.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "esp_rx.h"
+#include "esp_tx.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -50,7 +53,10 @@ UART_HandleTypeDef hlpuart1;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_LPUART1_UART_Init(void);
-/* USER CODE BEGIN PFP */
+extern void send_command();
+
+
+
 
 /* USER CODE END PFP */
 
@@ -95,9 +101,25 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+  HAL_GPIO_WritePin(WIFI_RST_GPIO_Port, WIFI_RST_Pin, GPIO_PIN_RESET);
+
+
+
+
   while (1)
   {
     /* USER CODE END WHILE */
+	    HAL_Delay(3000);
+	    /*
+	    send_command();
+	    receive_command();
+	    */
+
+	    Send_WifiCmd();
+
+
+
 
     /* USER CODE BEGIN 3 */
   }
@@ -207,6 +229,13 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
+    if (huart->Instance == LPUART1) {
+
+    }
+}
+
+
 
 /* USER CODE END 4 */
 
